@@ -1,0 +1,6 @@
+packages:
+  - app
+  - backend
+  - packages/*
+allowBuilds:
+  unrs-resolver: true
