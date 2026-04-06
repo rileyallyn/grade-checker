@@ -17,6 +17,7 @@
     "lint": "echo \"No lint step for @grade-checker/network-logger\""
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native": ">=0.80"
   }
 }
