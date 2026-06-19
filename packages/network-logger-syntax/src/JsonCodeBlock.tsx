@@ -2,8 +2,8 @@ import type { ThemedToken } from '@shikijs/types';
 import { Fragment, useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
 
-import { getShikiHighlighter } from './shikiHighlighter.js';
-import { shikiThemeForColorScheme } from './shikiTheme.js';
+import { getShikiHighlighter } from './shikiHighlighter';
+import { shikiThemeForColorScheme } from './shikiTheme';
 
 type Props = {
   code: string;

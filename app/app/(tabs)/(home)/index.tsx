@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -11,6 +11,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { Text, View } from '@/components/Themed';
+import { useColorScheme } from '@/components/useColorScheme';
+import Colors from '@/constants/Colors';
 import { Assignment, DashboardSummary, fetchDashboard, fetchInstitution } from '@/lib/api';
 import { Entity } from '@/lib/interfaces/Insitutions';
 import { useAuth } from '@/lib/auth';
@@ -28,6 +30,23 @@ function extractOrgBaseUrl(entity: Entity): string | null {
 }
 
 export default function HomeScreen() {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme];
+  const fieldStyles = useMemo(
+    () => ({
+      input: {
+        color: theme.text,
+        borderColor: colorScheme === 'dark' ? '#48484a' : '#c6c6c8',
+        backgroundColor: colorScheme === 'dark' ? '#1c1c1e' : '#f2f2f7',
+      },
+      placeholder: colorScheme === 'dark' ? '#8e8e93' : '#6d6d70',
+      suggestionBorder: colorScheme === 'dark' ? '#48484a' : '#c6c6c8',
+      suggestionDivider: colorScheme === 'dark' ? '#3a3a3c' : '#e5e5ea',
+      error: colorScheme === 'dark' ? '#ff6b6b' : '#c62828',
+    }),
+    [colorScheme, theme],
+  );
+
   const navigation = useNavigation();
   const { token, loading: authLoading, connectBrightspace } = useAuth();
   const [data, setData] = useState<DashboardSummary | null>(null);
@@ -169,8 +188,9 @@ export default function HomeScreen() {
           Search your institution, then we&apos;ll open the Brightspace login page.
         </Text>
         <TextInput
-          style={styles.input}
+          style={[styles.input, fieldStyles.input]}
           placeholder="Search institution (e.g. University of ...)"
+          placeholderTextColor={fieldStyles.placeholder}
           autoCapitalize="none"
           autoCorrect={false}
           value={institutionQuery}
@@ -185,12 +205,11 @@ export default function HomeScreen() {
           <ActivityIndicator style={styles.suggestionLoader} />
         ) : null}
         {institutionOptions.length > 0 ? (
-          <View style={styles.suggestionsContainer}>
+          <View style={[styles.suggestionsContainer, { borderColor: fieldStyles.suggestionBorder }]}>
             {institutionOptions.map((option) => (
-              
               <Text
                 key={option.orgBaseUrl}
-                style={styles.suggestionItem}
+                style={[styles.suggestionItem, { borderBottomColor: fieldStyles.suggestionDivider }]}
                 onPress={() => {
                   setInstitutionSearchPaused(true);
                   setInstitutionQuery(option.name);
@@ -208,7 +227,7 @@ export default function HomeScreen() {
         {orgBaseUrl ? (
           <Text style={styles.selectedInstitution}>Selected: {orgBaseUrl}</Text>
         ) : null}
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        {error ? <Text style={[styles.errorText, { color: fieldStyles.error }]}>{error}</Text> : null}
         <Button
           title="Connect"
           disabled={!orgBaseUrl}
@@ -245,7 +264,7 @@ export default function HomeScreen() {
       renderItem={renderAssignment}
       ListHeaderComponent={
         error ? (
-          <Text style={styles.errorText} selectable>
+          <Text style={[styles.errorText, { color: fieldStyles.error }]} selectable>
             {error}
           </Text>
         ) : null
@@ -291,8 +310,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 12,
-    borderColor: 'gray',
-    color: 'white',
   },
   suggestionLoader: {
     marginBottom: 12,
@@ -302,13 +319,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 12,
     overflow: 'hidden',
-    borderColor: 'gray',
   },
   suggestionItem: {
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: 'white',
   },
   selectedInstitution: {
     fontSize: 12,
@@ -348,7 +363,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   errorText: {
-    color: 'red',
     marginBottom: 8,
   },
 });

@@ -3,4 +3,7 @@ packages:
   - backend
   - packages/*
 allowBuilds:
+  esbuild: true
+  sharp: true
   unrs-resolver: true
+  workerd: true

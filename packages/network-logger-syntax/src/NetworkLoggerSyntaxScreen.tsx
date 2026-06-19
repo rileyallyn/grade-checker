@@ -1,7 +1,7 @@
 import { NetworkLoggerScreen, type BodyRendererParams } from '@grade-checker/network-logger';
 import { Platform, Text } from 'react-native';
 
-import { JsonCodeBlock } from './JsonCodeBlock.js';
+import { JsonCodeBlock } from './JsonCodeBlock';
 
 export type NetworkLoggerSyntaxScreenProps = {
   colorScheme: 'light' | 'dark';

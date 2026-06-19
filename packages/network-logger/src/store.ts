@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 export type LoggedRequest = {
   id: string;
   method: string;
@@ -165,9 +167,9 @@ export async function loggedFetch(
 }
 
 export function useNetworkLog(): LoggedRequest[] {
-  const [state, setState] = require('react').useState(entries);
+  const [state, setState] = useState(entries);
 
-  require('react').useEffect(() => {
+  useEffect(() => {
     const listener: Listener = (nextEntries) => setState(nextEntries);
     listeners.add(listener);
     return () => {

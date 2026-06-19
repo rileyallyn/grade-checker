@@ -10,8 +10,8 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import type { LoggedRequest } from './store.js';
-import { useNetworkLog } from './store.js';
+import type { LoggedRequest } from './store';
+import { useNetworkLog } from './store';
 
 export type NetworkLoggerThemeTokens = {
   background: string;
@@ -310,7 +310,10 @@ function RequestSummaryRow({
   return (
     <Pressable
       onPress={onPress}
-      style={({ hovered, pressed }) => [
+      style={(s) => {
+        const pressed = s.pressed;
+        const hovered = 'hovered' in s ? Boolean(s.hovered) : false;
+        return [
         styles.row,
         {
           borderWidth: 1,
@@ -327,7 +330,8 @@ function RequestSummaryRow({
             transitionProperty: 'background-color, border-color',
             transitionDuration: '150ms',
           } as ViewStyle),
-      ]}
+        ];
+      }}
     >
       <Text style={[styles.method, { color: tokens.titleText }]}>{item.method}</Text>
       <Text style={[styles.url, { color: tokens.secondaryText }]} numberOfLines={1}>

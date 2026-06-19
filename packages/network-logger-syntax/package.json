@@ -1,31 +1,55 @@
 {
   "name": "@grade-checker/network-logger-syntax",
   "version": "0.1.0",
-  "private": true,
+  "description": "Shiki-powered JSON syntax highlighting for @grade-checker/network-logger (native + web).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QPixel/grade-checker.git",
+    "directory": "packages/network-logger-syntax"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "echo \"No build step for @grade-checker/network-logger-syntax\"",
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "tsc -p tsconfig.build.json",
     "lint": "echo \"No lint step for @grade-checker/network-logger-syntax\""
   },
   "peerDependencies": {
-    "@grade-checker/network-logger": "workspace:*",
-    "react": ">=19",
-    "react-native": ">=0.80"
+    "@grade-checker/network-logger": "^0.1.0",
+    "react": ">=18.0.0",
+    "react-native": ">=0.76.0"
   },
   "dependencies": {
     "@shikijs/core": "^4.0.2",
     "@shikijs/engine-oniguruma": "^4.0.2",
     "@shikijs/langs": "^4.0.2",
     "@shikijs/themes": "^4.0.2",
+    "@shikijs/types": "^4.0.2",
     "react-native-shiki-engine": "^0.3.9"
+  },
+  "devDependencies": {
+    "@grade-checker/network-logger": "workspace:*",
+    "@types/react": "~19.2.2",
+    "react": "19.2.0",
+    "react-native": "0.83.2",
+    "typescript": "~5.9.2"
   }
 }
